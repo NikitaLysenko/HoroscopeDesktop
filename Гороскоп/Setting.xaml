@@ -1,0 +1,488 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication3"
+        xmlns:controls="clr-namespace:ColorPickerLib.Controls;assembly=ColorPickerLib"
+        xmlns:Themes="clr-namespace:ColorPickerLib.Themes;assembly=ColorPickerLib" xmlns:Converters="clr-namespace:ColorPickerLib.Converters;assembly=ColorPickerLib" xmlns:Behaviours="clr-namespace:ColorPickerLib.Behaviours;assembly=ColorPickerLib" xmlns:ColorPickerLib="clr-namespace:ColorPickerLib;assembly=ColorPickerLib" x:Name="MainWindow" x:Class="WpfApplication3.Setting"
+        mc:Ignorable="d"
+        Title="Setting" Height="400" Width="420" Closing="MainWindow_Closing" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Background="White" WindowStyle="ThreeDBorderWindow" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style x:Key="ColorCanvasStyle" TargetType="{x:Type controls:ColorCanvas}">
+            <Setter Property="Background" Value="{DynamicResource {ComponentResourceKey ResourceId=PanelBackgroundBrushKey, TypeInTargetAssembly={x:Type Themes:ResourceKeys}}}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource {ComponentResourceKey ResourceId=ControlNormalBorderKey, TypeInTargetAssembly={x:Type Themes:ResourceKeys}}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:ColorCanvas}">
+                        <Border BorderBrush="{x:Null}" BorderThickness="{TemplateBinding BorderThickness}" Background="{x:Null}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Border BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True" Margin="3">
+                                        <Border.Background>
+                                            <DrawingBrush TileMode="Tile" Viewport="0,0,10,10" ViewportUnits="Absolute">
+                                                <DrawingBrush.Drawing>
+                                                    <DrawingGroup>
+                                                        <GeometryDrawing Brush="White">
+                                                            <GeometryDrawing.Geometry>
+                                                                <RectangleGeometry Rect="0,0,100,100"/>
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                        <GeometryDrawing Brush="LightGray">
+                                                            <GeometryDrawing.Geometry>
+                                                                <GeometryGroup>
+                                                                    <RectangleGeometry Rect="0,0,50,50"/>
+                                                                    <RectangleGeometry Rect="50,50,50,50"/>
+                                                                </GeometryGroup>
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                    </DrawingGroup>
+                                                </DrawingBrush.Drawing>
+                                            </DrawingBrush>
+                                        </Border.Background>
+                                        <Canvas x:Name="PART_ColorShadingCanvas" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="300">
+                                            <Rectangle x:Name="ColorShadingRectangle" Height="{Binding Height, ElementName=PART_ColorShadingCanvas}" Width="{Binding Width, ElementName=PART_ColorShadingCanvas}">
+                                                <Rectangle.Fill>
+                                                    <Binding ElementName="PART_SpectrumSlider" Path="SelectedColor">
+                                                        <Binding.Converter>
+                                                            <Converters:ColorToSolidColorBrushConverter/>
+                                                        </Binding.Converter>
+                                                    </Binding>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <Rectangle x:Name="WhiteGradient" Height="{Binding Height, ElementName=PART_ColorShadingCanvas}" Width="{Binding Width, ElementName=PART_ColorShadingCanvas}">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                                        <GradientStop Color="White" Offset="0"/>
+                                                        <GradientStop Color="Transparent" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <Rectangle x:Name="BlackGradient" Height="{Binding Height, ElementName=PART_ColorShadingCanvas}" Width="{Binding Width, ElementName=PART_ColorShadingCanvas}">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+                                                        <GradientStop Color="Black" Offset="0"/>
+                                                        <GradientStop Color="#00000000" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <Canvas x:Name="PART_ColorShadeSelector" Height="10" IsHitTestVisible="False" Width="10">
+                                                <Ellipse Height="10" IsHitTestVisible="False" Stroke="White" StrokeThickness="3" Width="10"/>
+                                                <Ellipse Height="10" IsHitTestVisible="False" Stroke="Black" StrokeThickness="1" Width="10"/>
+                                            </Canvas>
+                                        </Canvas>
+                                    </Border>
+                                    <Border Margin="3" Grid.Row="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border x:Name="SelectedColorBorder" BorderBrush="#FFC9CACA" BorderThickness="1" Margin="3" MinHeight="22">
+                                                <Border.Background>
+                                                    <DrawingBrush TileMode="Tile" Viewport="0,0,10,10" ViewportUnits="Absolute">
+                                                        <DrawingBrush.Drawing>
+                                                            <DrawingGroup>
+                                                                <GeometryDrawing Brush="White">
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <RectangleGeometry Rect="0,0,100,100"/>
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                                <GeometryDrawing Brush="LightGray">
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <GeometryGroup>
+                                                                            <RectangleGeometry Rect="0,0,50,50"/>
+                                                                            <RectangleGeometry Rect="50,50,50,50"/>
+                                                                        </GeometryGroup>
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                            </DrawingGroup>
+                                                        </DrawingBrush.Drawing>
+                                                    </DrawingBrush>
+                                                </Border.Background>
+                                                <Rectangle x:Name="SelectedColor">
+                                                    <Rectangle.Fill>
+                                                        <Binding Path="SelectedColor" RelativeSource="{RelativeSource TemplatedParent}">
+                                                            <Binding.Converter>
+                                                                <Converters:ColorToSolidColorBrushConverter/>
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                            </Border>
+                                            <TextBox x:Name="PART_HexadecimalTextBox" Grid.Column="1" Margin="3" MaxLength="8" Behaviours:AllowableCharactersTextBoxBehavior.RegularExpressionProperty="^[0-9|a-f|A-F]+$" VerticalAlignment="Center">
+                                                <TextBox.Style>
+                                                    <Style TargetType="{x:Type TextBox}">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="FontFamily" Value="Courier New"/>
+                                                        <Setter Property="AcceptsReturn" Value="False"/>
+                                                        <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Style.BasedOn>
+                                                            <Style TargetType="{x:Type TextBox}">
+                                                                <Style.BasedOn>
+                                                                    <Style TargetType="{x:Type TextBoxBase}">
+                                                                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+                                                                        <Setter Property="BorderBrush" Value="#FFABADB3"/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                                                        <Setter Property="BorderThickness" Value="1"/>
+                                                                        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+                                                                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                                        <Setter Property="AllowDrop" Value="True"/>
+                                                                        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+                                                                        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                                                                        <Setter Property="Template">
+                                                                            <Setter.Value>
+                                                                                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                                                                                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                                                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                                                                    </Border>
+                                                                                    <ControlTemplate.Triggers>
+                                                                                        <Trigger Property="IsEnabled" Value="False">
+                                                                                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                                                                        </Trigger>
+                                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                                            <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                                                                                        </Trigger>
+                                                                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                                                                            <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                                                                                        </Trigger>
+                                                                                    </ControlTemplate.Triggers>
+                                                                                </ControlTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                        <Style.Triggers>
+                                                                            <MultiTrigger>
+                                                                                <MultiTrigger.Conditions>
+                                                                                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="True"/>
+                                                                                    <Condition Property="IsSelectionActive" Value="False"/>
+                                                                                </MultiTrigger.Conditions>
+                                                                                <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                                                                            </MultiTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Style.BasedOn>
+                                                            </Style>
+                                                        </Style.BasedOn>
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsFocused" Value="False">
+                                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                            <TextBlock Grid.Column="1" Margin="3" Text="#XXXXXXXXX" Visibility="Hidden" VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="FontFamily" Value="Courier New"/>
+                                                        <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Style.BasedOn>
+                                                            <Style TargetType="{x:Type TextBlock}">
+                                                                <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                                <Setter Property="TextTrimming" Value="None"/>
+                                                            </Style>
+                                                        </Style.BasedOn>
+                                                    </Style>
+                                                </TextBlock.Style><Run Text="#XXXXXXXXX"/></TextBlock>
+                                        </Grid>
+                                    </Border>
+                                    <Border Grid.Column="2" Margin="3" Grid.RowSpan="2">
+                                        <controls:ColorSpectrumSlider x:Name="PART_SpectrumSlider" VerticalAlignment="Stretch"/>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="SelectedColor" Value="{x:Null}">
+                                <Setter Property="Visibility" TargetName="PART_ColorShadeSelector" Value="Collapsed"/>
+                                <Setter Property="Background" TargetName="SelectedColorBorder" Value="Transparent"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ColorCanvasStyle2" TargetType="{x:Type controls:ColorCanvas}">
+            <Setter Property="Background" Value="{DynamicResource {ComponentResourceKey ResourceId=PanelBackgroundBrushKey, TypeInTargetAssembly={x:Type Themes:ResourceKeys}}}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource {ComponentResourceKey ResourceId=ControlNormalBorderKey, TypeInTargetAssembly={x:Type Themes:ResourceKeys}}}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type controls:ColorCanvas}">
+                        <Border BorderBrush="{x:Null}" BorderThickness="{TemplateBinding BorderThickness}" Background="{x:Null}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Border BorderBrush="DarkGray" BorderThickness="1" ClipToBounds="True" Margin="3">
+                                        <Border.Background>
+                                            <DrawingBrush TileMode="Tile" Viewport="0,0,10,10" ViewportUnits="Absolute">
+                                                <DrawingBrush.Drawing>
+                                                    <DrawingGroup>
+                                                        <GeometryDrawing Brush="White">
+                                                            <GeometryDrawing.Geometry>
+                                                                <RectangleGeometry Rect="0,0,100,100"/>
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                        <GeometryDrawing Brush="LightGray">
+                                                            <GeometryDrawing.Geometry>
+                                                                <GeometryGroup>
+                                                                    <RectangleGeometry Rect="0,0,50,50"/>
+                                                                    <RectangleGeometry Rect="50,50,50,50"/>
+                                                                </GeometryGroup>
+                                                            </GeometryDrawing.Geometry>
+                                                        </GeometryDrawing>
+                                                    </DrawingGroup>
+                                                </DrawingBrush.Drawing>
+                                            </DrawingBrush>
+                                        </Border.Background>
+                                        <Canvas x:Name="PART_ColorShadingCanvas" HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="300">
+                                            <Rectangle x:Name="ColorShadingRectangle" Height="{Binding Height, ElementName=PART_ColorShadingCanvas}" Width="{Binding Width, ElementName=PART_ColorShadingCanvas}">
+                                                <Rectangle.Fill>
+                                                    <Binding ElementName="PART_SpectrumSlider" Path="SelectedColor">
+                                                        <Binding.Converter>
+                                                            <Converters:ColorToSolidColorBrushConverter/>
+                                                        </Binding.Converter>
+                                                    </Binding>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <Rectangle x:Name="WhiteGradient" Height="{Binding Height, ElementName=PART_ColorShadingCanvas}" Width="{Binding Width, ElementName=PART_ColorShadingCanvas}">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
+                                                        <GradientStop Color="White" Offset="0"/>
+                                                        <GradientStop Color="Transparent" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <Rectangle x:Name="BlackGradient" Height="{Binding Height, ElementName=PART_ColorShadingCanvas}" Width="{Binding Width, ElementName=PART_ColorShadingCanvas}">
+                                                <Rectangle.Fill>
+                                                    <LinearGradientBrush EndPoint="0,0" StartPoint="0,1">
+                                                        <GradientStop Color="Black" Offset="0"/>
+                                                        <GradientStop Color="#00000000" Offset="1"/>
+                                                    </LinearGradientBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                            <Canvas x:Name="PART_ColorShadeSelector" Height="10" IsHitTestVisible="False" Width="10">
+                                                <Ellipse Height="10" IsHitTestVisible="False" Stroke="White" StrokeThickness="3" Width="10"/>
+                                                <Ellipse Height="10" IsHitTestVisible="False" Stroke="Black" StrokeThickness="1" Width="10"/>
+                                            </Canvas>
+                                        </Canvas>
+                                    </Border>
+                                    <Border Margin="3" Grid.Row="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border x:Name="SelectedColorBorder" BorderBrush="#FFC9CACA" BorderThickness="1" Margin="3" MinHeight="22">
+                                                <Border.Background>
+                                                    <DrawingBrush TileMode="Tile" Viewport="0,0,10,10" ViewportUnits="Absolute">
+                                                        <DrawingBrush.Drawing>
+                                                            <DrawingGroup>
+                                                                <GeometryDrawing Brush="White">
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <RectangleGeometry Rect="0,0,100,100"/>
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                                <GeometryDrawing Brush="LightGray">
+                                                                    <GeometryDrawing.Geometry>
+                                                                        <GeometryGroup>
+                                                                            <RectangleGeometry Rect="0,0,50,50"/>
+                                                                            <RectangleGeometry Rect="50,50,50,50"/>
+                                                                        </GeometryGroup>
+                                                                    </GeometryDrawing.Geometry>
+                                                                </GeometryDrawing>
+                                                            </DrawingGroup>
+                                                        </DrawingBrush.Drawing>
+                                                    </DrawingBrush>
+                                                </Border.Background>
+                                                <Rectangle x:Name="SelectedColor">
+                                                    <Rectangle.Fill>
+                                                        <Binding Path="SelectedColor" RelativeSource="{RelativeSource TemplatedParent}">
+                                                            <Binding.Converter>
+                                                                <Converters:ColorToSolidColorBrushConverter/>
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                            </Border>
+                                            <TextBox x:Name="PART_HexadecimalTextBox" Grid.Column="1" Margin="3" MaxLength="8" Behaviours:AllowableCharactersTextBoxBehavior.RegularExpressionProperty="^[0-9|a-f|A-F]+$" VerticalAlignment="Center">
+                                                <TextBox.Style>
+                                                    <Style TargetType="{x:Type TextBox}">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="FontFamily" Value="Courier New"/>
+                                                        <Setter Property="AcceptsReturn" Value="False"/>
+                                                        <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Style.BasedOn>
+                                                            <Style TargetType="{x:Type TextBox}">
+                                                                <Style.BasedOn>
+                                                                    <Style TargetType="{x:Type TextBoxBase}">
+                                                                        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+                                                                        <Setter Property="BorderBrush" Value="#FFABADB3"/>
+                                                                        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                                                        <Setter Property="BorderThickness" Value="1"/>
+                                                                        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+                                                                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                                                        <Setter Property="AllowDrop" Value="True"/>
+                                                                        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+                                                                        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+                                                                        <Setter Property="Template">
+                                                                            <Setter.Value>
+                                                                                <ControlTemplate TargetType="{x:Type TextBoxBase}">
+                                                                                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                                                                        <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                                                                    </Border>
+                                                                                    <ControlTemplate.Triggers>
+                                                                                        <Trigger Property="IsEnabled" Value="False">
+                                                                                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                                                                                        </Trigger>
+                                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                                            <Setter Property="BorderBrush" TargetName="border" Value="#FF7EB4EA"/>
+                                                                                        </Trigger>
+                                                                                        <Trigger Property="IsKeyboardFocused" Value="True">
+                                                                                            <Setter Property="BorderBrush" TargetName="border" Value="#FF569DE5"/>
+                                                                                        </Trigger>
+                                                                                    </ControlTemplate.Triggers>
+                                                                                </ControlTemplate>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                        <Style.Triggers>
+                                                                            <MultiTrigger>
+                                                                                <MultiTrigger.Conditions>
+                                                                                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="True"/>
+                                                                                    <Condition Property="IsSelectionActive" Value="False"/>
+                                                                                </MultiTrigger.Conditions>
+                                                                                <Setter Property="SelectionBrush" Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightBrushKey}}"/>
+                                                                            </MultiTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Style.BasedOn>
+                                                            </Style>
+                                                        </Style.BasedOn>
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsFocused" Value="False">
+                                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                            <TextBlock Grid.Column="1" Margin="3" Text="#XXXXXXXXX" Visibility="Hidden" VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="FontFamily" Value="Courier New"/>
+                                                        <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                                        <Style.BasedOn>
+                                                            <Style TargetType="{x:Type TextBlock}">
+                                                                <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                                <Setter Property="TextTrimming" Value="None"/>
+                                                            </Style>
+                                                        </Style.BasedOn>
+                                                    </Style>
+                                                </TextBlock.Style><Run Text="#XXXXXXXXX"/></TextBlock>
+                                        </Grid>
+                                    </Border>
+                                    <Border Grid.Column="2" Margin="3" Grid.RowSpan="2">
+                                        <controls:ColorSpectrumSlider x:Name="PART_SpectrumSlider" VerticalAlignment="Stretch"/>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="SelectedColor" Value="{x:Null}">
+                                <Setter Property="Visibility" TargetName="PART_ColorShadeSelector" Value="Collapsed"/>
+                                <Setter Property="Background" TargetName="SelectedColorBorder" Value="Transparent"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+
+        <Button x:Name="button" Content="Применить" HorizontalAlignment="Right" Height="21" Margin="309,339,10,8" VerticalAlignment="Bottom" Width="79" Click="button_Click"/>
+        <Button x:Name="button_Copy" Content="Отмена" HorizontalAlignment="Right" Height="21" Margin="0,0,94,8" VerticalAlignment="Bottom" Width="79" Click="button_Copy_Click"/>
+        <TabControl x:Name="tabControl" TabStripPlacement="Left" Margin="0,0,0,35">
+            <TabItem Header="Общие">
+                <Grid>
+                    <Label x:Name="label" Content="Зодиак по умолчанию:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="177"/>
+                    <ComboBox x:Name="comboBox" HorizontalAlignment="Left" Margin="144,3,0,0" VerticalAlignment="Top" Width="162"/>
+                    <Label x:Name="label_Copy" Content="Запуск при старте системы:" HorizontalAlignment="Left" VerticalAlignment="Top" Width="177" Margin="0,31,0,0"/>
+                    <CheckBox x:Name="autoStart_CheckBox" Content="" HorizontalAlignment="Left" Height="21" Margin="171,38,0,0" VerticalAlignment="Top" Width="18" Click="autoStart_CheckBox_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Окно" Background="{x:Null}">
+                <Grid>
+                    <controls:ColorCanvas x:Name="_colorCanvas"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Stretch" Style="{DynamicResource ColorCanvasStyle2}" Height="196" SelectedColorChanged="_colorCanvas_SelectedColorChanged" RenderTransformOrigin="0.505,0.424" />
+                    <Slider x:Name="transparentColorsSlider" Margin="129.5,247.838,22.5,0" Height="24" Width="200" Maximum="100" Minimum="15" IsSelectionRangeEnabled="True" VerticalAlignment="Top" AutoToolTipPlacement="TopLeft" LargeChange="80" SmallChange="0" Value="80" UseLayoutRounding="False" ValueChanged="transparentColorsSlider_ValueChanged"/>
+                    <Label x:Name="transparentColorsLable" Content="Прозрачность:" HorizontalAlignment="Left" Margin="10,246,0,0" VerticalAlignment="Top"/>
+                    <Slider x:Name="heightSlider" Margin="129.5,273.55,22.5,0" Height="24" Width="200" Maximum="300" Minimum="132" IsSelectionRangeEnabled="True" VerticalAlignment="Top" AutoToolTipPlacement="TopLeft" LargeChange="0" SmallChange="0" Value="130" UseLayoutRounding="False" ValueChanged="heightSlider_ValueChanged"/>
+                    <Label x:Name="heightLabel" Content="Высота:" HorizontalAlignment="Left" Margin="10,271,0,0" VerticalAlignment="Top"/>
+                    <Slider x:Name="widthSlider" Margin="129.5,299.104,22.5,0" Height="24" Width="200" Maximum="500" Minimum="250" IsSelectionRangeEnabled="True" VerticalAlignment="Top" AutoToolTipPlacement="TopLeft" LargeChange="0" SmallChange="0" Value="280" UseLayoutRounding="False" ValueChanged="widthSlider_ValueChanged"/>
+                    <Label x:Name="widthLabel" Content="Ширина:" HorizontalAlignment="Left" Margin="10,297,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="fonColorsLable" Content="Отключить фон:" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="checkBox" Content="" HorizontalAlignment="Left" Margin="133,197,0,0" VerticalAlignment="Top" Height="26" Width="19" Click="checkBox_Click"/>
+                    <Label x:Name="fonColorsLable_Copy" Content="Закрепить:" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="checkBox_Copy" Content="" HorizontalAlignment="Left" Margin="133,226,0,0" VerticalAlignment="Top" Height="26" Width="36" Click="checkBox_Copy_Click"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Шрифт" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54" Background="{x:Null}">
+                <Grid>
+                    <StackPanel CanVerticallyScroll="True">
+                        <controls:ColorCanvas x:Name="_colorCanvas2"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Stretch" Style="{DynamicResource ColorCanvasStyle2}" Height="199" SelectedColorChanged="_colorCanvas2_SelectedColorChanged" Margin="0,0,10,0" />
+                        <Grid Height="66">
+                            <Slider x:Name="slider_Copy" Margin="144,10,0,0" Height="24" Maximum="100" Minimum="15" IsSelectionRangeEnabled="True" VerticalAlignment="Top" AutoToolTipPlacement="TopLeft" LargeChange="80" SmallChange="0" Value="80" UseLayoutRounding="False" ValueChanged="slider_ValueChanged"/>
+                            <Label x:Name="label1_Copy" Content="Прозрачность:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top"/>
+                            <Button x:Name="button1" Content="Button" Click="button1_Click" VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
