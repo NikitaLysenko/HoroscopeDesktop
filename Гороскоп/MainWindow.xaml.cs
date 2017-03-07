@@ -349,7 +349,7 @@ namespace WpfApplication3
     [Serializable]
     public class WindowStile:Default
     {
-        public double Orasity { get; set; } = ps.WindowOrasity;
+        public double Orasity { get; set;} = ps.WindowOrasity;
         public string Background { get; set; } = ps.Background;
     }
 }
