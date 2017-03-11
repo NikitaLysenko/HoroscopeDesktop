@@ -111,20 +111,6 @@ namespace Horoscope.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;general&gt;
-        ///  &lt;currentZodiac&gt;aries&lt;/currentZodiac&gt;
-        ///  &lt;versionProgramm&gt;0.01&lt;/versionProgramm&gt;
-        ///&lt;/general&gt;
-        ///.
-        /// </summary>
-        internal static string config {
-            get {
-                return ResourceManager.GetString("config", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на aries.
         /// </summary>
         internal static string currentZodiac {

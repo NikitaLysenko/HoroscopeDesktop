@@ -33,22 +33,26 @@ namespace WpfApplication3
 
             Autorun(true);
             ApplySetting(styleWindow);
-		    try
-		    {
-                Class.serverParse();
-                writeTextBlock(ps.CurrentZodiac);
-            }
-		    catch (Exception e)
-		    {
-		        
-		    }
+		    Run();
+		}
+
+	    public void Run()
+	    {
+	        try
+	        {
+	            Class.serverParse();
+	            writeTextBlock(ps.CurrentZodiac);
+	        }
+	        catch (Exception)
+	        {
+	        }
         }
 
         public void Autorun(bool ck)
         {
             try
             {
-                string ExePath = System.Windows.Forms.Application.ExecutablePath;
+                string ExePath = Environment.CurrentDirectory + "\\Horoscope.exe";
                 RegistryKey reg;
                 reg = Registry.CurrentUser.CreateSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run\\");
                 if (ck)
@@ -64,9 +68,7 @@ namespace WpfApplication3
             }
             catch (Exception)
             {
-                presentDay.Text = "Ошибка подключения к серверу";
-                tomorrow.Text = "Ошибка подключения к серверу";
-                week.Text = "Ошибка подключения к серверу";
+                
             }
         }
 
@@ -140,7 +142,7 @@ namespace WpfApplication3
 
         internal void writeTextBlock(string zodiac = "aries")
 		{
-			currentZodiac_image.Source = new BitmapImage( new Uri(Directory.GetCurrentDirectory() + "\\Resources\\images\\" + zodiac+".png"));
+			currentZodiac_image.Source = new BitmapImage( new Uri(Directory.GetCurrentDirectory() + "\\Images\\" + zodiac+".png"));
 			currentZodiac_image.ToolTip = zodiacListRu[zodiac] + " (текущий гороскоп)";
 			presentDay.Text = Class._all[0][zodiac];
 			tomorrow.Text = Class._all[1][zodiac];
@@ -282,6 +284,11 @@ namespace WpfApplication3
             Horoscope.Properties.Settings ps = Horoscope.Properties.Settings.Default;
             this.Top = ps.Top;
             this.Left = ps.Left;
+        }
+
+        private void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Run();
         }
     }
     static class Class
