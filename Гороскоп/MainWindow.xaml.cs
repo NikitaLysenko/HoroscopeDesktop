@@ -43,9 +43,17 @@ namespace WpfApplication3
 	            Class.serverParse();
 	            writeTextBlock(ps.CurrentZodiac);
 	        }
-	        catch (Exception)
+	        catch (Exception exception)
 	        {
+                ErrorText(exception.ToString());
 	        }
+        }
+
+	    private void ErrorText(string e)
+	    {
+            presentDay.Text = e;
+            tomorrow.Text = e;
+            week.Text = e;
         }
 
         public void Autorun(bool ck)
@@ -66,9 +74,9 @@ namespace WpfApplication3
                     reg.DeleteValue("Гороскоп на рабочий стол");
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                
+                ErrorText(exception.ToString());
             }
         }
 
