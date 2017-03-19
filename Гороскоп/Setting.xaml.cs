@@ -10,9 +10,6 @@ using FontFamily = System.Windows.Media.FontFamily;
 
 namespace WpfApplication3
 {
-    /// <summary>
-    /// Логика взаимодействия для Setting.xaml
-    /// </summary>
     public partial class Setting : Window
     {
         private MainWindow _showMainWindow;
